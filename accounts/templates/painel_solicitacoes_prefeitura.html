@@ -1,0 +1,145 @@
+
+<!-- Estya página serve para a prefeitura realizar as tratativas -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/checkout/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+    <meta name="description" content="solicitação_prefeitura_indaiatuba">
+    <meta name="keywords" content="solicitação, prefeitura indaiatuba, manutenção">
+    <title>Solicitações | Prefeitura de Indaiautba  </title>
+    <style>
+        .input-group-container {
+            margin-left: 0;
+            padding-left: 0;
+        }
+        .status-menu, .prioridade-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid black;
+            min-width: 100px;
+            left: 50%;
+            transform: translateX(-306%);
+        }
+        .status-menu a, .prioridade-menu a {
+            display: block;
+            padding: 5px;
+            text-decoration: none;
+            color: black;
+        }
+        td.mensagem {
+            white-space: pre-wrap;
+        }
+        /* Adiciona estilos à tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            cursor: pointer; /* Adiciona o cursor de ponteiro */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function toggleStatusMenu(id) {
+            var menu = document.getElementById('status-menu-' + id);
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function togglePrioridadeMenu(id) {
+            var menu = document.getElementById('prioridade-menu-' + id);
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function pesquisarPorId() {
+            var id = document.getElementById('pesquisa').value;
+            var solicitacoes = document.getElementsByClassName('solicitacao');
+            for (var i = 0; i < solicitacoes.length; i++) {
+                if (solicitacoes[i].id !== 'solicitacao-' + id) {
+                    solicitacoes[i].style.display = 'none';
+                } else {
+                    solicitacoes[i].style.display = '';
+                }
+            }
+        }
+    </script>
+
+    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class="py-5 text-center">
+        {% load static %}
+        <img class="d-block mx-auto mb-4" src="{% static 'images/prefeitura.png' %}" alt="prefeitura de indaiatuba" width="480" height="200">
+        
+        <h2>Guardiões Urbanos</h2>
+        <p class="lead">Guardiões urbanos, é um serviço de zeladoria da cidade de forma online, onde com a cooperação do cidadão é solicitado serviços na sua rua ou em seu bairro, de um jeito mais fácil e rápido.</p>
+    </div>
+    <div>
+        <h1>Solicitações:</h1>
+        <input type="text" id="pesquisa" placeholder="Digite o ID para pesquisar">
+        <button class="btn btn-primary btn-sm" type="button" onclick="pesquisarPorId()">Pesquisar</button>
+        <button class="btn btn-primary btn-sm" type="button" onclick="location.reload()">Atualizar</button> <!-- Adiciona o botão de atualizar -->
+        </div>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>            
+                    <th scope="col">Foto</th>
+                    <th scope="col">Data</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Endereço</th>
+                    <th scope="col">Tipo de Solicitação</th>
+                    <th scope="col">Prioridade</th>
+                    <th scope="col">Mensagem</th> 
+                </tr>
+            </thead>
+            {% for solicitacao in solicitacoes %}
+            <tr class="solicitacao" id="solicitacao-{{ solicitacao.id }}">
+                <td>{{ solicitacao.id }}</td>
+                <td>
+                    {% if solicitacao.imagem %}
+                        <a href="{{ solicitacao.imagem.url }}" target="_blank">Ver Imagem</a>
+                    {% endif %}
+                </td>
+                <td>{{ solicitacao.data_abertura|date:"d/m/Y" }}</td>
+                <td onclick="toggleStatusMenu({{ solicitacao.id }})">{{ solicitacao.status }} <span>&#9660;</span></td> <!-- Adiciona a seta -->
+                <td>{{ solicitacao.nome }}</td>
+                <td>{{ solicitacao.endereco }}</td>
+                <td>{{ solicitacao.get_tipo_solicitacao_display }}</td>
+                <td onclick="togglePrioridadeMenu({{ solicitacao.id }})">{{ solicitacao.prioridade }}</td>
+                <td class="mensagem">{{ solicitacao.mensagem }}</td> 
+            </tr>
+            <tr id="status-menu-{{ solicitacao.id }}" class="status-menu">
+                <td colspan="9"> 
+                    <a href="{% url 'atualizar_status' solicitacao.id 'em aberto' %}">Em Aberto</a>
+                    <a href="{% url 'atualizar_status' solicitacao.id 'pendente' %}">Pendente</a>
+                    <a href="{% url 'atualizar_status' solicitacao.id 'finalizado' %}">Finalizado</a>
+                </td>
+            </tr>
+            <tr id="prioridade-menu-{{ solicitacao.id }}" class="prioridade-menu">
+                <td colspan="9"> 
+                    <a href="{% url 'atualizar_prioridade' solicitacao.id 'minima' %}">Mínima</a>
+                    <a href="{% url 'atualizar_prioridade' solicitacao.id 'maxima' %}">Máxima</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+</body>
+</html>
+
+
+

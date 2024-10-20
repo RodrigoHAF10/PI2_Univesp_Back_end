@@ -1,0 +1,75 @@
+
+<!-- accounts/templates/solicitacoes_municipe_sucesso.html -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="">
+    <meta name="description" content="solicitação_prefeitura_indaiatuba">
+    <meta name="keywords" content="solicitação, prefeitura indaiatuba, manutenção">
+    <title>Guardiões Urbanos | Prefeitura de Indaiatuba</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/checkout/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Bootstrap core CSS -->
+    <style>
+        /* Estilos para o botão Voltar */
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos para a mensagem do ID */
+        p.id {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="py-5 text-center">
+        {% load static %}
+        <img class="d-block mx-auto mb-4" src="{% static 'images/prefeitura.png' %}" alt="Prefeitura de Indaiatuba" width="480" height="200">
+        <h2>Guardiões Urbanos</h2>
+        <h1 class="lead">Sua solicitação foi enviada com sucesso!</h1>
+    </div>
+
+    <div class="container">
+        <div class="content left-align" style="margin-top: 50px;">
+            <h3>ID da solicitação: {{ solicitacao.id }}</h3>
+            <h3>Nome: {{ solicitacao.nome }}</h3>
+            <h3>Endereço: {{ solicitacao.endereco }}</h3>
+            <h3>Tipo de solicitação: {{ solicitacao.get_tipo_solicitacao_display }}</h3>
+            <h3>Prioridade: {{ solicitacao.get_prioridade_display }}</h3>
+            <h3>Mensagem: {{ solicitacao.mensagem }}</h3>
+            <a href="{% url 'painel_solicitacoes_municipe' %}">Voltar</a>
+        </div>
+
+        <!-- Seção para a imagem da solicitação -->
+        <div class="rounded float-end" style="margin-top: -350px; position: relative; left: -150px;">
+            <h3>Foto do local:</h3>
+            {% if solicitacao.imagem %}
+                <a href="{{ solicitacao.imagem.url }}" target="_blank">Ver Imagem</a>
+            {% else %}
+                <p>Nenhuma imagem foi enviada.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
