@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t%3o)(t^$=e5dh%_9!y_*wku2mx4*f)=ar*6+168#7_(hf6y1k
 DEBUG = True
 
 # Allowing all hosts for development and testing
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['pi2univespsite.pythonanywhere.com']
 
 # Application definition
 
@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'piunivesp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'databasepi',
-        'USER': 'piunivesp',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': 'pi2univespsite$default',            # Nome do banco de dados
+        'USER': 'pi2univespsite',                     # Nome de usuário correto
+        'PASSWORD': 'senha1234',                      # Senha do banco de dados
+        'HOST': 'pi2univespsite.mysql.pythonanywhere-services.com',  # Host correto
+        'PORT': '3306',                               # Porta padrão do MySQL
     }
 }
 
@@ -122,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
